@@ -1,0 +1,133 @@
+---
+title: "clustur"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{clustur}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options: 
+  chunk_output_type: console
+---
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Background
+clustur was developed to be similar to [mothur's cluster
+function](https://mothur.org/wiki/cluster/) that was written in C++. In order to
+cluster your data, users need to provide their own sparse or phylip-formatted
+distance matrix. They also need to provide a count table that either comes from
+mothur or that they create in R. Once these objects are built users can call the
+`cluster()` function. We currently support 5 methods: opticlust (default) and
+furthest, nearest, weighted, and average neighbor.  The opticlust method is
+`cluster()` and mothur's default. The speed of the methods implemented in
+{clustur} and mothur are comparable; {clustur} may even be faster! Below we will
+show you how to create your sparse matrix and count table. If you do not have a
+count table, clustur can produce one from you, but it will assume the abundance
+of each sequence is one and it will only cluster the sequences in the distance
+matrix. The output of running `clustur()` includes what is typically provided in
+a mothur-formatted shared file.
+
+
+## Starting Up
+For the official release from CRAN you can use the standard `install.packages()`
+function:
+
+```r
+# install via cran
+install.packages("clustur")
+```
+
+For the developmental version, you can use the `install_github()` function from
+the {devtools} package
+
+```r
+# install via github
+devtools::install_github("SchlossLab/clustur")
+```
+
+Because {clustur}'s functions make use of a random number generator, users are strongly encouraged to set the seed.
+
+```{r setup}
+library(clustur)
+set.seed(19760620)
+```
+
+## Read count files
+clustur will produce the same output using either a sparse (default) or full
+[count table](https://mothur.org/wiki/count_file/)
+
+```{r}
+full_count_table <- read_count(example_path("amazon.full.count_table"))
+sparse_count_table <- read_count(example_path("amazon.sparse.count_table"))
+```
+
+
+## Read distance matrix file
+
+clustur will read both mothur's [column/sparse distance
+matrix](https://mothur.org/wiki/column-formatted_distance_matrix/) and
+[Phylip-formatted distance ](https://mothur.org/wiki/phylip-formatted_distance_matrix/) matrix formats. 
+
+```{r}
+column_distance <- read_dist(example_path("amazon_column.dist"), full_count_table, cutoff = 0.03)
+```
+
+or
+
+```{r}
+phylip_distance <- read_dist(example_path("amazon_phylip.dist"), full_count_table, cutoff = 0.03)
+```
+
+The return value of `distance_data` will be a memory address. If you want a data
+frame version of the distances, you can use `get_distance_df(distance_data)`.
+
+```{r}
+get_distance_df(column_distance)
+get_distance_df(phylip_distance)
+```
+
+
+## Clustering the data
+
+The default method for clustering in `cluster` is "opticlust" 
+
+```{r}
+cutoff <- 0.03
+cluster_data <- cluster(column_distance, cutoff)
+```
+
+
+### Selecting different clustering methods
+```{r}
+
+cluster_data <- cluster(column_distance, cutoff, method = "furthest")
+cluster_data <- cluster(column_distance, cutoff, method = "nearest")
+cluster_data <- cluster(column_distance, cutoff, method = "average")
+cluster_data <- cluster(column_distance, cutoff, method = "weighted")
+```
+
+
+## Output data from clustering
+
+#### edit this paragraph further...
+All methods produce a list object with an indicator of the cutoff that was used
+(`label`), as well as cluster composition (`cluster`) and shared (`abundance`) data frames.
+The `clusters` data frame shows which OTU (Operation Taxonomic Unit) each sequence was assigned to. The `abundance` data frame
+contains columns indicating the `OTU` and `sample` identifiers and the
+abundance of each OTU in each sample. The OptiClust method also includes the `metrics` data
+frame, which describe the optimization value for each iteration in the fitting
+process; the data in `clusters` and `shared` are taken from the last iteration.
+clustur provides getter functions, `get_label()`, `get_clusters()`,
+`get_shared()`, and `get_metrics()`, which will be demonstrated below.
+
+```{r R.options=list(max.print=15)}
+clusters <- cluster(column_distance, cutoff, method = "opticlust")
+get_cutoff(clusters)
+get_bins(clusters)
+get_abundance(clusters)
+get_metrics(clusters)
+```
