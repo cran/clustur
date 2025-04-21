@@ -1,6 +1,6 @@
-27c5d49995636f8cb5c97d329bd71a07 *DESCRIPTION
+366d1b63c8ef55b5d3bf5aa8a6a06199 *DESCRIPTION
 5e075de42934a408cd7829c0f5057609 *NAMESPACE
-1e99f53162dac4ed8008b5410e9d8f0a *NEWS.md
+71feec961024d916d96d1d2a01c0b40d *NEWS.md
 7034f1a6569fdee6ca6bdc33525bdd35 *R/RcppExports.R
 767e9766da93dd588bba000b6a2460ec *R/catch-routine-registration.R
 a6c1f4ce6b2d37574a08f1a89bc14297 *R/cluster.R
@@ -9,8 +9,8 @@ a6c1f4ce6b2d37574a08f1a89bc14297 *R/cluster.R
 1952527e50ccf93678c7c6c682fef4ba *R/clustur-package.R
 562f5024d892d44b383408f71e526e4a *R/distance_object-getters.R
 8416eb96c8be958a66db7211b6b8e82b *README.md
-4454e632feb75ce4f508807d50b3b12f *build/partial.rdb
-193cd469589bc93ddd5dad310a2b6237 *build/vignette.rds
+f61db891eb928123aba4412ca322f508 *build/partial.rdb
+cdeb682e0f0e34673c38da9626962552 *build/vignette.rds
 78a4d68fe0b67a332b7c9932e843ff48 *inst/doc/clustur.R
 64f1f0826c8d9015c1aa6569ade7e049 *inst/doc/clustur.Rmd
 b7ab6c24d95ca789a3d995bc93f5446a *inst/doc/clustur.html
@@ -103,7 +103,7 @@ edce45a3ae1c67f2038faa8edef59391 *src/OptiData.cpp
 c90269b5c1ebb9db6f3e7e5bc8d6ff21 *src/OptiDataTestFixture.cpp
 6dce580058268bd202d0c0ad64415323 *src/OptiMatrix.cpp
 048456b33135e0a88ad7340267ae22ac *src/OpticlusterData.cpp
-32f209429685268ab8bec6292d6825bf *src/OptimatrixAdapter.cpp
+ea293d97301208fcf373150fb5fed858 *src/OptimatrixAdapter.cpp
 35a6fa4cacfad022943a80abac81ea84 *src/OptimatrixAdapterTestFixture.cpp
 6403fcb0b5633b74f7a4f72b9872c65a *src/PhylipReaderTestFixture.cpp
 c3bef1cd8beb3bad2a45dd5f2c3f1ec4 *src/RAbundVector.cpp
@@ -170,5 +170,5 @@ d72539dd3ae72a4a1b5bbfa432f5c3de *tests/testthat/extdata/amazon_column.dist
 464cf5c128cd2d161e09038b2b2addf3 *tests/testthat/test-cluster_object-getters.R
 ce0cab670914d11a94325bd77638fc11 *tests/testthat/test-cpp.R
 d12279e1a08a2cff39b76a58b9748181 *tests/testthat/test-distance_object-getters.R
-e0526543118eadd053aa3eb947764bdb *tests/testthat/test-test-opticluster.R
+ce524013a8a36dbe5501596d2ea80844 *tests/testthat/test-test-opticluster.R
 64f1f0826c8d9015c1aa6569ade7e049 *vignettes/clustur.Rmd
