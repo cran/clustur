@@ -446,6 +446,44 @@ address. If you want a data frame version of the distances, you can use
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>cluster_data <span class="ot">&lt;-</span> <span class="fu">cluster</span>(column_distance, cutoff, <span class="at">method =</span> <span class="st">&quot;nearest&quot;</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>cluster_data <span class="ot">&lt;-</span> <span class="fu">cluster</span>(column_distance, cutoff, <span class="at">method =</span> <span class="st">&quot;average&quot;</span>)</span>
 <span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>cluster_data <span class="ot">&lt;-</span> <span class="fu">cluster</span>(column_distance, cutoff, <span class="at">method =</span> <span class="st">&quot;weighted&quot;</span>)</span></code></pre></div>
+<div id="additional-clustering-methods" class="section level4">
+<h4>Additional clustering methods</h4>
+<p>Along with the main cluster function, mothur also includes two other
+clustering methods: optifit and optisplit. Optifit allows you to fit
+sequences into existing OTUs. Optisplit takes advantage of multithread
+capabilities by splitting groups into taxonomy, and clustering those
+groups together. Then finishes by combining them together.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>  amazon_count <span class="ot">&lt;-</span> <span class="fu">read_count</span>(<span class="fu">example_path</span>(<span class="st">&quot;amazon.full.count_table&quot;</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  amazon_dist <span class="ot">&lt;-</span> <span class="fu">read_dist</span>(<span class="fu">example_path</span>(<span class="st">&quot;amazon_phylip.dist&quot;</span>), amazon_count, <span class="fl">0.03</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  esophagus_fasta <span class="ot">&lt;-</span> <span class="fu">read_fasta</span>(<span class="fu">example_path</span>(<span class="st">&quot;esophagus.fasta&quot;</span>))</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  esophagus_count <span class="ot">&lt;-</span> <span class="fu">read_count</span>(<span class="fu">example_path</span>(<span class="st">&quot;esophagus.count_table&quot;</span>))</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  amazon_fasta <span class="ot">&lt;-</span> <span class="fu">read_fasta</span>(<span class="fu">example_path</span>(<span class="st">&quot;amazon.align&quot;</span>))</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>  esophagus_list <span class="ot">&lt;-</span> <span class="fu">read_mothur_list</span>(<span class="fu">example_path</span>(<span class="st">&quot;esophagus.list&quot;</span>))</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>  denovo <span class="ot">&lt;-</span> <span class="fu">optifit</span>(amazon_dist, <span class="fl">0.03</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt; accnos, ref_fasta, ref_count, ref_list, and fit_fastaparameters are all NULL. Running Optifit using denovo.</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>  denovo_open <span class="ot">&lt;-</span> <span class="fu">optifit</span>(amazon_dist, <span class="fl">0.03</span>, <span class="at">close =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co">#&gt; accnos, ref_fasta, ref_count, ref_list, and fit_fastaparameters are all NULL. Running Optifit using denovo.</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>  accnos <span class="ot">&lt;-</span> <span class="fu">optifit</span>(amazon_dist, <span class="fl">0.03</span>, <span class="at">accnos =</span> amazon_count<span class="sc">$</span>Representative_Sequence[<span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>])</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; Accnos file is not null, running optifit using accnos.</span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a>  accnos_open <span class="ot">&lt;-</span> <span class="fu">optifit</span>(amazon_dist, <span class="fl">0.03</span>, <span class="at">accnos =</span> amazon_count<span class="sc">$</span>Representative_Sequence[<span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>],</span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a>                         <span class="at">closed=</span><span class="cn">FALSE</span>)</span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="co">#&gt; Accnos file is not null, running optifit using accnos.</span></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a>  ref_cluster <span class="ot">&lt;-</span> <span class="fu">optifit</span>(amazon_dist, <span class="fl">0.03</span>, <span class="st">&quot;feature&quot;</span>, <span class="st">&quot;bin&quot;</span>, <span class="at">accnos =</span> <span class="cn">NULL</span>,</span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a>                         <span class="at">ref_fasta =</span> esophagus_fasta, <span class="at">ref_count =</span> esophagus_count,</span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a>                         <span class="at">ref_list =</span> esophagus_list, <span class="at">fit_fasta =</span> amazon_fasta,</span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a>                         <span class="at">number_of_threads =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>(), <span class="at">print_ref =</span> <span class="cn">TRUE</span>, <span class="at">closed =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt; ref_fasta, ref_list, ref_count, and fit_fasta are not NULL, running reference based optifit.</span></span></code></pre></div>
+<p><strong>Example of Optisplit</strong></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>  cutoff <span class="ot">&lt;-</span> <span class="fl">0.03</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  count_table <span class="ot">&lt;-</span> <span class="fu">read_count</span>(<span class="fu">example_path</span>(<span class="st">&quot;amazon.full.count_table&quot;</span>))</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  fasta <span class="ot">&lt;-</span> <span class="fu">read_fasta</span>(<span class="fu">example_path</span>(<span class="st">&quot;amazon.align&quot;</span>))</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>  taxonomy <span class="ot">&lt;-</span> <span class="fu">read_mothur_taxonomy</span>(<span class="fu">example_path</span>(<span class="st">&quot;amazon.taxonomy&quot;</span>))</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">cluster_split</span>(<span class="at">fasta =</span> fasta, <span class="at">taxonomy =</span> taxonomy, <span class="at">count_table =</span> count_table, <span class="at">cluster_method =</span> <span class="st">&quot;opti&quot;</span>, <span class="at">cutoff =</span> cutoff, <span class="at">taxonomy_cutoff =</span> <span class="dv">3</span>, <span class="at">number_of_threads =</span> <span class="dv">1</span>)</span></code></pre></div>
+</div>
 </div>
 </div>
 <div id="output-data-from-clustering" class="section level2">
@@ -464,39 +502,39 @@ for each iteration in the fitting process; the data in
 iteration. clustur provides getter functions, <code>get_label()</code>,
 <code>get_clusters()</code>, <code>get_shared()</code>, and
 <code>get_metrics()</code>, which will be demonstrated below.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">cluster</span>(column_distance, cutoff, <span class="at">method =</span> <span class="st">&quot;opticlust&quot;</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">get_cutoff</span>(clusters)</span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt; [1] 0.03</span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="fu">get_bins</span>(clusters)</span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt;   feature  bin</span></span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt; 1  U68630 bin1</span></span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt; 2  U68595 bin2</span></span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; 3  U68600 bin3</span></span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt; 4  U68591 bin4</span></span>
-<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt; 5  U68647 bin5</span></span>
-<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt; 6  U68661 bin6</span></span>
-<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co">#&gt; 7  U68605 bin7</span></span>
-<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 81 rows ]</span></span>
-<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="fu">get_abundance</span>(clusters)</span>
-<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt;   samples  bin abundance</span></span>
-<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">#&gt; 1 pasture bin1         0</span></span>
-<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co">#&gt; 2  forest bin1         1</span></span>
-<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="co">#&gt; 3 pasture bin2         0</span></span>
-<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="co">#&gt; 4  forest bin2         1</span></span>
-<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="co">#&gt; 5 pasture bin3         0</span></span>
-<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 171 rows ]</span></span>
-<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="fu">get_metrics</span>(clusters)</span>
-<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="co">#&gt; $metrics</span></span>
-<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt;    f1score accuracy    label      fdr      ppv specificity sensitivity       fn</span></span>
-<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a><span class="co">#&gt; 1 1.000000 1.000000 0.030000 1.000000 1.000000    1.000000    1.000000 0.000000</span></span>
-<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a><span class="co">#&gt;            tn      npv   cutoff      mcc       ttp       fp</span></span>
-<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a><span class="co">#&gt; 1 4736.000000 1.000000 0.030000 1.000000 17.000000 0.000000</span></span>
-<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a><span class="co">#&gt; $iteration_metrics</span></span>
-<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a><span class="co">#&gt;      iter time label num_otus cutoff tp tn fp fn sensitivity specificity ppv</span></span>
-<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a><span class="co">#&gt;      npv fdr accuracy</span></span>
-<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 2 columns ]</span></span>
-<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 3 rows ]</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">cluster</span>(column_distance, cutoff, <span class="at">method =</span> <span class="st">&quot;opticlust&quot;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">get_cutoff</span>(clusters)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co">#&gt; [1] 0.03</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="fu">get_bins</span>(clusters)</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co">#&gt;   feature  bin</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; 1  U68630 bin1</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt; 2  U68595 bin2</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt; 3  U68600 bin3</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt; 4  U68591 bin4</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; 5  U68647 bin5</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt; 6  U68661 bin6</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt; 7  U68605 bin7</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 81 rows ]</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="fu">get_abundance</span>(clusters)</span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt;   samples  bin abundance</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="co">#&gt; 1 pasture bin1         0</span></span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="co">#&gt; 2  forest bin1         1</span></span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; 3 pasture bin2         0</span></span>
+<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co">#&gt; 4  forest bin2         1</span></span>
+<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a><span class="co">#&gt; 5 pasture bin3         0</span></span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 171 rows ]</span></span>
+<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a><span class="fu">get_metrics</span>(clusters)</span>
+<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a><span class="co">#&gt; $metrics</span></span>
+<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a><span class="co">#&gt;    f1score      mcc accuracy    label      fdr      ppv        tp specificity</span></span>
+<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a><span class="co">#&gt; 1 1.000000 1.000000 1.000000 0.030000 1.000000 1.000000 17.000000    1.000000</span></span>
+<span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a><span class="co">#&gt;   sensitivity       fn          tn      npv   cutoff       fp</span></span>
+<span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="co">#&gt; 1    1.000000 0.000000 4736.000000 1.000000 0.030000 0.000000</span></span>
+<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="co">#&gt; $iteration_metrics</span></span>
+<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a><span class="co">#&gt;      iter time label num_otus cutoff tp tn fp fn sensitivity specificity ppv</span></span>
+<span id="cb12-31"><a href="#cb12-31" tabindex="-1"></a><span class="co">#&gt;      npv fdr accuracy</span></span>
+<span id="cb12-32"><a href="#cb12-32" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 2 columns ]</span></span>
+<span id="cb12-33"><a href="#cb12-33" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 3 rows ]</span></span></code></pre></div>
 </div>
 
 
