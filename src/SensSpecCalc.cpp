@@ -26,14 +26,14 @@ SensSpecCalc::SensSpecCalc(const OptiData& matrix, const ListVector* list){
                 std::string binnames = list->get(i);
                 std::vector<std::string> bnames;
                 Utils::splitAtComma(binnames, bnames);
-
+                if (bnames.empty()) continue;
                 std::vector<int> newNames;
                 for (const auto & name : bnames) {
                     const auto itSeq1 = std::lower_bound(nameIndex.begin(),
                         nameIndex.end(), name, VectorPairCompare());
                     // auto itSeq1 = nameIndex.find(name);
                     long long seq1Index = -1;
-                    if (itSeq1->first == name) {
+                    if (itSeq1 != nameIndex.cend() && itSeq1->first == name) {
                         seq1Index = itSeq1->second;
                     } //you have distances in the matrix
 

@@ -1,6 +1,6 @@
-3ec8421b34328890fa487e209ac8ac87 *DESCRIPTION
+32fd2fecf6eea4f9c55c8d90dfc6f785 *DESCRIPTION
 4b915eee3aa45d1a1d2fa95a618d47fd *NAMESPACE
-41984397f4fb21a9fa07c9441e627b6c *NEWS.md
+9d863a0f743c0b8465f10cbfa491940b *NEWS.md
 c71eb690031eabf22173cf31df7e3f74 *R/RcppExports.R
 767e9766da93dd588bba000b6a2460ec *R/catch-routine-registration.R
 90cf19c6ffd27063ad6ca99c8df85067 *R/cluster.R
@@ -12,9 +12,9 @@ d1120e749add2f42c6bfc01fbf8a45aa *R/clustur-package.R
 d0480987c68ecc6e4616355e75f1aef6 *README.md
 29cf7d47d34a2b0e7ae0e2046f2d132b *build/partial.rdb
 052164e367ca63e1a94de55783a57b8f *build/vignette.rds
-d18ad2fe00216121327d4fe485ee2332 *inst/doc/clustur.R
-ecf8b7ac2d25409d3550fb065287a311 *inst/doc/clustur.Rmd
-91eb33d9d29d00b2f6dfe2ac147e7eaf *inst/doc/clustur.html
+8b20f7daa926af40ade237afbe577e31 *inst/doc/clustur.R
+67021ecc8d17980d7afa6df4ec368202 *inst/doc/clustur.Rmd
+762f44f98b151007d12b4f67d65b93a4 *inst/doc/clustur.html
 000c158195bfa75268125e0e0263af82 *inst/extdata/amazon.align
 369d139fdb5c0893b1b82ef97aaa01ac *inst/extdata/amazon.full.count_table
 9eb2a743407fad65c1164a9e711f6493 *inst/extdata/amazon.sparse.count_table
@@ -51,7 +51,7 @@ a9aa4b71c457783c066ee8f95dafaa83 *src/Adapters/OptimatrixAdapter.h
 99854eec2546af9f52a868daf6a73e6a *src/Cluster.cpp
 f4a5d96d4543be77460821ea4788f3e7 *src/ClusterData.cpp
 7a710671cfe663d471bc9e0504df843e *src/ClusterParameters.cpp
-30d4c9cfd00ba153eb894b32077a3cf9 *src/ClusterSplit.cpp
+79797d651e00d5f4f38cff66f90a9c98 *src/ClusterSplit.cpp
 3f314712622fe6203ca2c20a10ba4f11 *src/Clusters/AverageLinkage.h
 69726df7b5733af7d3baa8911dbadfa8 *src/Clusters/Cluster.h
 6d9a999b429d07622bd6ff6fe2188eef *src/Clusters/ClusterMethod.h
@@ -89,7 +89,7 @@ a83657ba4490f5dbe04a55d785af8391 *src/DataFrameAdapter.cpp
 f022a8a6c49b141d1a3af93f04d486e5 *src/DataStructures/FastaDatabase.h
 dfc622afa89dbd5a1c89ddf11be393ce *src/DataStructures/IndexAbundancePair.h
 e19ff2552cbf1b21def180169cb43849 *src/DataStructures/ListVector.h
-964c28da66795c232441970196a63e4d *src/DataStructures/OptiData.h
+3a23e88b1e583665d05792d2a906b95e *src/DataStructures/OptiData.h
 be99ba567d71e0504b18a9327b506911 *src/DataStructures/OptiDataComponentFactory.h
 fc4dcfb8c6cf6425ffbcebe39d074b66 *src/DataStructures/OptiMatrix.h
 207ee4c12a9ebdae8efd195891157965 *src/DataStructures/OptiRefMatrix.h
@@ -134,7 +134,7 @@ a45a7c2094e3e7b7943f9be7f11cde96 *src/PhyloTree.cpp
 f496e918288e50da7013667ba808ea61 *src/RNG/SubSample.h
 cd7ceff4946fd3da5c0c1612aa53f24c *src/RcppExports.cpp
 7d3d46fe756f61234d440cca877b4a53 *src/ReadPhylipMatrix.cpp
-eafadcf9829289f4d2de5b25068d347a *src/SensSpecCalc.cpp
+e04571fbd2546cdcff9097ce69117a99 *src/SensSpecCalc.cpp
 cd313b7b6263a35cd49bc8547711eeba *src/SharedFile.cpp
 6ca19a7612e1ac7784a7253268ec0c7c *src/SharedFileBuilder.cpp
 c69f12819635db2c37df53f9726964a9 *src/SharedFileData/SharedFile.h
@@ -162,5 +162,5 @@ d72539dd3ae72a4a1b5bbfa432f5c3de *tests/testthat/extdata/amazon_column.dist
 464cf5c128cd2d161e09038b2b2addf3 *tests/testthat/test-cluster_object-getters.R
 ce0cab670914d11a94325bd77638fc11 *tests/testthat/test-cpp.R
 d12279e1a08a2cff39b76a58b9748181 *tests/testthat/test-distance_object-getters.R
-3be9853e44ca8aab5c0559e681f142e1 *tests/testthat/test-test-opticluster.R
-ecf8b7ac2d25409d3550fb065287a311 *vignettes/clustur.Rmd
+ea3773e823d802676b0154891c3a250a *tests/testthat/test-test-opticluster.R
+67021ecc8d17980d7afa6df4ec368202 *vignettes/clustur.Rmd
